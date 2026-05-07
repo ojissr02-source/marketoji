@@ -1,0 +1,648 @@
+
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Toko OJI | Top Up & File Free Fire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at 20% 30%, #0a0c1a, #02040c);
+            color: #f0f3ff;
+            min-height: 100vh;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000ea;
+            backdrop-filter: blur(6px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .loading-content {
+            text-align: center;
+            animation: fadeGlow 1.2s infinite alternate;
+        }
+
+        .gojo-eyes {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .eye {
+            width: 85px;
+            height: 85px;
+            background: radial-gradient(circle at 35% 35%, #eef5ff, #7bc5ff);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 25px #0ff, 0 0 45px #0099cc;
+            animation: eyePulse 1.6s infinite;
+        }
+
+        .eye::after {
+            content: "";
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background: #071a24;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: inset 0 0 5px cyan, 0 0 8px #0ff;
+        }
+
+        .infinity-ring {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 3px solid rgba(0, 255, 255, 0.6);
+            border-top: 3px solid white;
+            animation: spinLoader 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        .loading-text {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #33e0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        .welcome-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #c7f0ff;
+            text-shadow: 0 0 6px #00a6ff;
+            background: rgba(0,0,0,0.5);
+            padding: 8px 20px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+        }
+
+        @keyframes spinLoader {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes eyePulse {
+            0% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 5px cyan; }
+            100% { transform: scale(1.07); opacity: 1; box-shadow: 0 0 25px cyan; }
+        }
+
+        @keyframes fadeGlow {
+            0% { opacity: 0.8; filter: brightness(0.9);}
+            100% { opacity: 1; filter: brightness(1.2);}
+        }
+
+        .main-content {
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: rgba(2, 8, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #2bd4ff60;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 800;
+        }
+        .logo span {
+            color: #2bd4ff;
+            text-shadow: 0 0 5px cyan;
+        }
+        .logo small {
+            font-size: 0.7rem;
+            font-weight: normal;
+            display: block;
+            color: #bbddff;
+        }
+
+        .cart-icon {
+            font-size: 1.8rem;
+            cursor: pointer;
+            position: relative;
+        }
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -12px;
+            background: #ff3860;
+            color: white;
+            border-radius: 40px;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background: linear-gradient(145deg, #071a2b30, #010a15);
+            border-bottom: 1px solid #0ff30;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+        }
+        .hero h1 i {
+            color: #0ff;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin: 2rem 0 1rem;
+            border-left: 6px solid cyan;
+            padding-left: 20px;
+            display: inline-block;
+            width: auto;
+        }
+        .section-container {
+            padding: 0 5%;
+            max-width: 1300px;
+            margin: auto;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            padding: 1.5rem 0 2rem;
+        }
+        .product-card {
+            background: rgba(18, 28, 45, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            border: 1px solid #30e0ff60;
+            padding: 1.5rem;
+            transition: 0.25s;
+            text-align: center;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            border-color: cyan;
+            box-shadow: 0 15px 25px -10px #00ccff30;
+        }
+        .product-img {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 5px cyan);
+        }
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #7effe6;
+        }
+        .btn-order-wa {
+            background: linear-gradient(95deg, #25D366, #128C7E);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.3rem;
+            border-radius: 50px;
+            margin-top: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-order-wa:hover {
+            background: #128C7E;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px #25D366;
+        }
+
+        .file-list-section {
+            background: linear-gradient(135deg, #0b1428cc, #010514cc);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 1.8rem;
+            margin: 2rem auto;
+            border: 1px solid #ff66cc80;
+        }
+        .file-list-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #ffb3ff;
+            text-shadow: 0 0 4px magenta;
+        }
+        .file-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+        }
+        .file-card {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            padding: 1rem 1.8rem;
+            border: 1px solid #f0f;
+            text-align: center;
+            min-width: 170px;
+            flex: 1;
+        }
+        .file-card i {
+            font-size: 2rem;
+            color: #ff66cc;
+        }
+        .file-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 6px;
+        }
+        .file-desc {
+            font-size: 0.75rem;
+            color: #ccc;
+        }
+        .btn-file-wa {
+            background: #25D366;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            margin-top: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: black;
+            transition: 0.2s;
+        }
+        .btn-file-wa:hover {
+            background: #128C7E;
+            transform: scale(1.02);
+        }
+
+        .payment-section {
+            margin: 2rem 5% 3rem;
+            background: linear-gradient(135deg, #0b1428cc, #010514cc);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 2rem;
+            border: 1px solid cyan;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        .qr-card {
+            text-align: center;
+            background: #0b1322;
+            padding: 1.2rem;
+            border-radius: 36px;
+            min-width: 240px;
+        }
+        .qr-code-sim {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px cyan;
+            text-align: center;
+        }
+        .qr-code-sim i {
+            font-size: 70px;
+            color: black;
+        }
+        .wa-card {
+            text-align: center;
+            background: #0a1628c9;
+            padding: 1.5rem;
+            border-radius: 36px;
+            min-width: 260px;
+        }
+        .wa-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: #25D36620;
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 60px;
+            margin: 12px 0;
+        }
+        .btn-wa-large {
+            background: #25D366;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            color: black;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.2s;
+        }
+        .btn-wa-large:hover {
+            background: #128C7E;
+            transform: scale(1.02);
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.75rem;
+            border-top: 1px solid #0ff30;
+        }
+        .order-now-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.2s;
+        }
+        .order-now-btn:hover {
+            transform: scale(1.05);
+            background: #128C7E;
+        }
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 1.9rem; }
+            .payment-section { flex-direction: column; }
+            .order-now-btn { padding: 8px 16px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="loading-screen" id="loadingScreen">
+    <div class="loading-content">
+        <div class="gojo-eyes">
+            <div class="eye"></div>
+            <div class="eye"></div>
+        </div>
+        <div class="infinity-ring"></div>
+        <div class="loading-text">DOMAIN EXPANSION</div>
+        <div class="welcome-text">✨ SELAMAT DATANG DI TOKO OJI ✨</div>
+        <div style="margin-top:18px; font-size:14px; color:cyan;">Loading Top Up & File FF...</div>
+    </div>
+</div>
+
+<div class="main-content" id="mainApp">
+    <nav class="navbar">
+        <div class="logo">⚡ OJI<span>STORE</span><small>FF Top Up & File</small></div>
+        <div class="cart-icon" id="cartIcon">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1><i class="fas fa-gamepad"></i> TOP UP FREE FIRE</h1>
+        <p>Diamond Termurah • File Exklusif • Fast Response</p>
+        <p style="font-size:0.8rem;">🔥 Langsung ORDER via WhatsApp — Proses Cepat & Aman</p>
+    </section>
+
+    <div class="section-container">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h2 class="section-title"><i class="fas fa-gem"></i> Top Up Diamond FF</h2>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+
+        <div class="file-list-section">
+            <div class="file-list-title">
+                <i class="fas fa-file-code"></i> FILE FREE FIRE
+            </div>
+            <div class="file-items" id="fileListContainer"></div>
+            <div class="instruction" style="text-align:center; margin-top:18px; font-size:13px;">
+                ⚡ File config & mod aimlock, drag hs. Chat langsung ke admin untuk panduan penggunaan.
+            </div>
+        </div>
+    </div>
+
+    <div class="payment-section">
+        <div class="qr-card">
+            <div class="qr-code-sim">
+                <i class="fas fa-qrcode"></i>
+                <div style="font-weight:bold; color:#000; margin-top:6px;">SCAN QR</div>
+                <div style="font-size:10px; color:#333;">OJI STORE PAYMENT</div>
+                <div style="font-size:9px; background:#eee; margin-top:6px; padding:4px; border-radius:12px;">
+                    BAYAR → KIRIM BUKTI KE WA
+                </div>
+            </div>
+            <p style="margin-top: 10px;"><i class="fas fa-credit-card"></i> Scan QR untuk pembayaran</p>
+        </div>
+
+        <div class="wa-card">
+            <i class="fab fa-whatsapp" style="font-size: 2.5rem; color:#25D366;"></i>
+            <h3>Chat Admin Langsung</h3>
+            <div class="wa-number">
+                <i class="fab fa-whatsapp"></i> 0813-1345-9622
+            </div>
+            <button class="btn-wa-large" id="directWABtn">
+                <i class="fab fa-whatsapp"></i> Chat Sekarang
+            </button>
+            <div class="instruction">
+                📌 Klik tombol di atas untuk langsung chat WhatsApp<br>
+                Sertakan pesanan & bukti transfer
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 OJISTORE | Top Up Free Fire + Config File | Aman & Terpercaya</p>
+        <p style="font-size:0.7rem;">⏱ Fast Response • Harga Termurah • Bergaransi</p>
+    </footer>
+</div>
+
+<button class="order-now-btn" id="floatingOrderBtn">
+    <i class="fab fa-whatsapp"></i> ORDER SEKARANG
+</button>
+
+<script>
+    const ADMIN_PHONE = '6281313459622'; // Nomor Anda 081313459622 dalam format internasional
+
+    const diamondProducts = [
+        { id: 1, name: "140 DM", price: 23000, desc: "140 Diamond Free Fire", emoji: "💎🔥" },
+        { id: 2, name: "355 DM", price: 54000, desc: "355 Diamond + Bonus", emoji: "💎⚡" },
+        { id: 3, name: "720 DM", price: 102000, desc: "720 Diamond Terlaris", emoji: "💎✨" },
+        { id: 4, name: "1000 DM", price: 152000, desc: "1000 Diamond Best Deal", emoji: "💎👑" }
+    ];
+
+    const fileItems = [
+        { name: "AIM LOCK 50%", desc: "Config aim assist 50%, auto lock target", icon: "fas fa-crosshairs" },
+        { name: "DRAG HS 59%", desc: "Drag headshot 59%, mantap untuk rank push", icon: "fas fa-bullseye" }
+    ];
+
+    // Fungsi utama untuk kirim WA
+    function sendWhatsApp(message) {
+        const waLink = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(message)}`;
+        window.open(waLink, '_blank');
+    }
+
+    // Order diamond langsung
+    function orderDiamondDirect(product) {
+        const message = `Halo Admin OJI STORE! Saya mau order Diamond FF:
+        
+📱 Produk: ${product.name}
+💰 Harga: Rp ${product.price.toLocaleString('id-ID')}
+💎 Deskripsi: ${product.desc}
+
+Saya akan melakukan pembayaran via QR dan mengirimkan bukti transfer.
+ID Game saya: [ISI ID GAME ANDA]
+Terima kasih!`;
+        sendWhatsApp(message);
+    }
+
+    // Request file
+    function requestFile(fileName) {
+        const message = `Halo Admin OJI STORE, saya mau request file Free Fire:
+        
+📁 File: ${fileName}
+Saya tertarik untuk order diamond juga jika ada promo.
+Mohon info harga dan cara penggunaannya. Terima kasih!`;
+        sendWhatsApp(message);
+    }
+
+    // Chat umum / custom order
+    function chatAdmin(customMessage = null) {
+        let message = customMessage;
+        if (!message) {
+            message = `Halo Admin OJI STORE! Saya mau order Top Up Diamond FF atau tanya-tanya tentang file config. Mohon infonya. Terima kasih.`;
+        }
+        sendWhatsApp(message);
+    }
+
+    function renderProducts() {
+        const grid = document.getElementById('productGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        diamondProducts.forEach(prod => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <div class="product-img">${prod.emoji}</div>
+                <div class="product-title">${prod.name}</div>
+                <div class="product-price">Rp ${prod.price.toLocaleString('id-ID')}</div>
+                <div style="font-size:12px; margin:5px 0;">${prod.desc}</div>
+                <button class="btn-order-wa" data-id="${prod.id}" data-name="${prod.name}" data-price="${prod.price}">
+                    <i class="fab fa-whatsapp"></i> ORDER VIA WA
+                </button>
+            `;
+            grid.appendChild(card);
+        });
+
+        document.querySelectorAll('.btn-order-wa').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.getAttribute('data-id'));
+                const product = diamondProducts.find(p => p.id === id);
+                if (product) orderDiamondDirect(product);
+            });
+        });
+    }
+
+    function renderFiles() {
+        const container = document.getElementById('fileListContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        fileItems.forEach(file => {
+            const fileCard = document.createElement('div');
+            fileCard.className = 'file-card';
+            fileCard.innerHTML = `
+                <i class="${file.icon}"></i>
+                <div class="file-name">${file.name}</div>
+                <div class="file-desc">${file.desc}</div>
+                <button class="btn-file-wa" data-file="${file.name}">
+                    <i class="fab fa-whatsapp"></i> Request File
+                </button>
+            `;
+            container.appendChild(fileCard);
+        });
+
+        document.querySelectorAll('.btn-file-wa').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const fileName = btn.getAttribute('data-file');
+                requestFile(fileName);
+            });
+        });
+    }
+
+    function setupWhatsAppButtons() {
+        const directBtn = document.getElementById('directWABtn');
+        if (directBtn) {
+            directBtn.addEventListener('click', () => chatAdmin());
+        }
+
+        const floatingBtn = document.getElementById('floatingOrderBtn');
+        if (floatingBtn) {
+            floatingBtn.addEventListener('click', () => chatAdmin());
+        }
+    }
+
+    // Loading screen
+    window.addEventListener('load', () => {
+        renderProducts();
+        renderFiles();
+        setupWhatsAppButtons();
+
+        setTimeout(() => {
+            const loader = document.getElementById('loadingScreen');
+            const mainApp = document.getElementById('mainApp');
+            if (loader) {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 800);
+            }
+            if (mainApp) mainApp.style.opacity = '1';
+        }, 2000);
+    });
+</script>
+</body>
+</html>
+```
+
